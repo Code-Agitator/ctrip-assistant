@@ -1,0 +1,10 @@
+typing-extensions
+numpy
+langchain-core
+pandas
+pytz
+langgraph
+langchain
+langchain_huggingface
+langchain_openai
+langchain_community

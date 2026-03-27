@@ -1,0 +1,4 @@
+.idea
+.venv
+travel2.sqlite
+travel_new.sqlite
