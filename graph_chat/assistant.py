@@ -1,7 +1,8 @@
 import os
 from datetime import datetime
 
-from langchain_community.tools import TavilySearchResults
+from langchain_tavily import TavilySearch
+
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable, RunnableConfig
 from langchain_openai import ChatOpenAI
@@ -44,10 +45,10 @@ class CtripAssistant:
                 state = {**state, 'messages': messages}
             else:
                 break
-        return {'message': result}
+        return {'messages': result}
 
 # 初始化搜索工具，限制结果数量为2
-tavily_tool = TavilySearchResults(max_results=1, tavily_api_key=os.environ.get('TAVILY_API_KEY'))
+tavily_tool = TavilySearch(max_results=1, tavily_api_key=os.environ.get('TAVILY_API_KEY'))
 # 定义工具列表，这些工具将在与用户交互过程中被调用
 part_1_tools = [
     tavily_tool,
@@ -76,7 +77,7 @@ def create_assistant_node():
     :return:
     """
     model = ChatOpenAI(
-        model='Qwen/Qwen3-32B',
+        model='Qwen/QwQ-32B',
         base_url=os.environ.get('OPENAI_BASE_URL'),
         api_key=os.environ.get('OPENAI_API_KEY')
     )
@@ -87,7 +88,7 @@ def create_assistant_node():
                 "system",
                 "您是携程瑞士航空公司的客户服务助理。优先使用提供的工具搜索航班、公司政策和其他信息来帮助用户的查询。"
                 "搜索时，请坚持不懈。如果第一次搜索没有结果，扩大您的查询范围。"
-                "如果搜索为空，在放弃之前扩展您的搜索。\n\n当前用户:\n<User>\n{user_info}\n</User>"
+                "如果搜索为空，在放弃之前扩展您的搜索。\n\n当前用户:\n<User>\n{user_id}\n</User>"
                 "\n当前时间: {time}.",
             ),
             ("placeholder", "{messages}"),

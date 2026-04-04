@@ -8,13 +8,14 @@ from langchain_core.tools import tool
 
 from tools import db
 
-
+@tool
 def fetch_user_flight_information(config: RunnableConfig) -> List[Dict]:
     """
     此函数通过给定的乘客ID，从数据库中获取该乘客的所有机票信息及其相关联的航班信息和座位分配情况。
     返回:
         包含每张机票的详情、关联航班的信息及座位分配的字典列表。
     """
+    print(f'function call: fetch_user_flight_information')
     configuration = config.get("configurable", {})
     passenger_id = configuration.get("passenger_id", None)
     if not passenger_id:
